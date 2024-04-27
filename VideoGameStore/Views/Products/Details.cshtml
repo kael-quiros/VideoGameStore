@@ -1,0 +1,109 @@
+﻿@model VideoGameStore.Models.Product
+
+@{
+    ViewData["Title"] = "Detalles del Producto";
+}
+
+<style>
+    body {
+        background-image: url('/img/000.jpeg');
+        background-size: cover;
+        background-position: center;
+        color: white;
+    }
+</style>
+
+<h1>Detalles del Producto</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PublicationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Availability)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Availability)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VideoUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.VideoUrl) && Model.VideoUrl.Contains("youtube.com"))
+            {
+                <div id="player"></div>
+            }
+            else if (!string.IsNullOrEmpty(Model.VideoUrl))
+            {
+                <p>No se pudo cargar el video desde la URL: @Model.VideoUrl</p>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.VideoUrl)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cantidad)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="index">Regresar al Catálogo</a>
+</div>
+
+<script src="https://www.youtube.com/player_api"></script>
+
+@section Scripts {
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            var videoId = '@(Model.VideoUrl?.Split("=")[1])';
+            if (videoId) {
+                player = new YT.Player('player', {
+                    height: '315',
+                    width: '560',
+                    videoId: videoId,
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onError': onPlayerError
+                    }
+                });
+            }
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        function onPlayerError(event) {
+            console.log('Error al cargar el video: ' + event.data);
+        }
+    </script>
+}

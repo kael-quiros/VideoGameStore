@@ -1,0 +1,40 @@
+﻿@model IEnumerable<VideoGameStore.Models.Order>
+
+@{
+    ViewData["Title"] = "Mis Órdenes";
+}
+
+<h1>Mis Órdenes</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Número de Orden</th>
+                <th>Fecha de Creación</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td>@order.TotalAmount</td>
+                    <td>Pendiente</td> <!-- Asumimos un estado pendiente por ahora -->
+                    <td>
+                        <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary">Ver Detalles</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No tienes órdenes actualmente.</p>
+}

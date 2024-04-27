@@ -1,0 +1,89 @@
+﻿@model IEnumerable<VideoGameStore.Models.Product>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Inicio";
+    var isAdminString = HttpContextAccessor.HttpContext.Session.GetString("IsAdmin");
+    bool isAdmin = isAdminString != null && bool.Parse(isAdminString);
+}
+
+<style>
+    body {
+        background-image: url('/img/juegos.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .jumbotron {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
+    .product-card {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="jumbotron text-center">
+    <h1 class="display-4">Bienvenido a la Tienda de Videojuegos</h1>
+    <p class="lead">Explora nuestra selección de productos.</p>
+    <a asp-controller="ShoppingCart" asp-action="Index" class="btn btn-primary btn-lg">Ver Carrito</a>
+</div>
+
+@if (isAdmin)
+{
+    <div class="container mb-4">
+        <h2 class="text-center">Sección de Administración</h2>
+        <p class="text-center">
+            <a asp-controller="Admin" asp-action="UserManagement" class="btn btn-secondary">Gestión de Usuarios</a>
+            <a asp-controller="Admin" asp-action="ProductManagement" class="btn btn-secondary">Gestión de Productos</a>
+        </p>
+    </div>
+}
+
+<div class="container">
+    <h2 class="text-center mb-4">Catálogo de Productos</h2>
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card product-card">
+                        @if (product.Image != null && product.Image.Length > 0)
+                        {
+                            var base64Image = Convert.ToBase64String(product.Image);
+                            var imageUrl = $"data:image/jpeg;base64,{base64Image}";
+                            <img src="@imageUrl" alt="Imagen de @product.Name" class="card-img-top">
+                        }
+                        else
+                        {
+                            <div class="text-center p-4">
+                                <img src="https://via.placeholder.com/150" alt="Sin imagen" class="card-img-top">
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">Precio: @product.Price</p>
+                            <p class="card-text">Disponibilidad: @(product.Availability ? "Disponible" : "No Disponible")</p>
+                            <div class="text-center">
+                                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId" class="btn btn-primary">Ver Detalles</a>
+                                <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@product.ProductId" asp-route-quantity="1" class="btn btn-success">Agregar al Carrito</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center">No hay productos disponibles en este momento.</p>
+    }
+</div>

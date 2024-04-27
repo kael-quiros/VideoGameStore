@@ -1,0 +1,71 @@
+﻿@model VideoGameStore.Models.ShoppingCart
+@inject VideoGameStore.Services.IProductService ProductService
+@{
+    ViewData["Title"] = "Carrito de Compras";
+    decimal totalAmount = 0;
+}
+
+<h1>Carrito de Compras</h1>
+
+@if (Model != null && Model.CartItems.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Imagen</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cartItem in Model.CartItems)
+            {
+                var product = await ProductService.GetProductByIdAsync(cartItem.ProductId);
+                decimal subtotal = product.Price * cartItem.Quantity;
+                totalAmount += subtotal;
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Price.ToString("C")</td>
+                    <td>
+                        <form asp-action="UpdateCartItem" method="post">
+                            <input type="hidden" name="id" value="@product.ProductId" />
+                            <input type="number" name="quantity" value="@cartItem.Quantity" min="1" />
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </form>
+                    </td>
+                    <td>
+                        @if (product.Image != null && product.Image.Length > 0)
+                        {
+                            var base64Image = Convert.ToBase64String(product.Image);
+                            var imageUrl = $"data:image/jpeg;base64,{base64Image}";
+                            <img src="@imageUrl" alt="Imagen de @product.Name" style="width: 100px; height: 100px;" />
+                        }
+                        else
+                        {
+                            <p>Sin imagen</p>
+                        }
+                    </td>
+                    <td>@subtotal.ToString("C")</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-id="@product.ProductId" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Total:</td>
+                <td>@totalAmount.ToString("C")</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+    <a asp-action="Checkout" class="btn btn-success">Realizar Pedido</a>
+}
+else
+{
+    <p>Tu carrito está vacío.</p>
+}

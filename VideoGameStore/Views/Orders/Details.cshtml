@@ -1,0 +1,43 @@
+﻿@model VideoGameStore.Models.Order
+
+@{
+    ViewData["Title"] = "Detalles de la Orden";
+}
+
+<h1>Detalles de la Orden #@Model.OrderId</h1>
+
+<div>
+    <h4>Información de la Orden</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Fecha de Creación</dt>
+        <dd class="col-sm-9">@Model.OrderDate.ToString("yyyy-MM-dd")</dd>
+        <dt class="col-sm-3">Total</dt>
+        <dd class="col-sm-9">@Model.TotalAmount</dd>
+        <dt class="col-sm-3">Estado</dt>
+        <dd class="col-sm-9">Pendiente</dd> <!-- Asumimos un estado pendiente por ahora -->
+    </dl>
+</div>
+
+<h4>Productos</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderItem in Model.OrderItems)
+        {
+            <tr>
+                <td>@orderItem.Product.Name</td>
+                <td>@orderItem.Product.Price</td>
+                <td>@orderItem.Quantity</td>
+                <td>@(orderItem.Product.Price * orderItem.Quantity)</td>
+            </tr>
+        }
+    </tbody>
+</table>

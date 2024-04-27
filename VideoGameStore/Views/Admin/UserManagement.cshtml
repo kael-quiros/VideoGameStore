@@ -1,0 +1,48 @@
+﻿@model IEnumerable<VideoGameStore.Models.User>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+    var isAdminString = HttpContextAccessor.HttpContext.Session.GetString("IsAdmin");
+    bool isAdmin = isAdminString != null && bool.Parse(isAdminString);
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Último inicio de sesión</th>
+                <th>Rol</th>
+                @if (isAdmin)
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@(user.LastLogin?.ToString("g") ?? "Nunca")</td>
+                    <td>@(user.IsAdmin == true ? "Administrador" : "Usuario")</td>
+                    @if (isAdmin)
+                    {
+                        <td>
+                            <a asp-action="EditUser" asp-route-id="@user.UserId">Editar</a> |
+                            <a asp-action="DeleteUser" asp-route-id="@user.UserId">Eliminar</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay usuarios registrados.</p>
+}
