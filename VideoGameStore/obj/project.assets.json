@@ -8280,11 +8280,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kenne\\Desktop\\asdasdasd\\VideoGameStore (2)\\VideoGameStore (2)\\VideoGameStore\\VideoGameStore\\VideoGameStore.csproj",
+      "projectUniqueName": "C:\\Users\\kenne\\Desktop\\Uiversidad Fidelitas\\Proyectos\\VideoGameStore\\VideoGameStore\\VideoGameStore.csproj",
       "projectName": "VideoGameStore",
-      "projectPath": "C:\\Users\\kenne\\Desktop\\asdasdasd\\VideoGameStore (2)\\VideoGameStore (2)\\VideoGameStore\\VideoGameStore\\VideoGameStore.csproj",
+      "projectPath": "C:\\Users\\kenne\\Desktop\\Uiversidad Fidelitas\\Proyectos\\VideoGameStore\\VideoGameStore\\VideoGameStore.csproj",
       "packagesPath": "C:\\Users\\kenne\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kenne\\Desktop\\asdasdasd\\VideoGameStore (2)\\VideoGameStore (2)\\VideoGameStore\\VideoGameStore\\obj\\",
+      "outputPath": "C:\\Users\\kenne\\Desktop\\Uiversidad Fidelitas\\Proyectos\\VideoGameStore\\VideoGameStore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\kenne\\AppData\\Roaming\\NuGet\\NuGet.Config",
